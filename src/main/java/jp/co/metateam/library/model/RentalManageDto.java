@@ -2,7 +2,8 @@ package jp.co.metateam.library.model;
 
 import java.sql.Timestamp;
 import java.util.Date;
-
+import java.time.LocalDate;
+import java.time.ZoneId;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import jakarta.validation.constraints.NotEmpty;
@@ -63,6 +64,28 @@ public class RentalManageDto {
             return Optional.of("キャンセルから変更できません");
         }
         return Optional.empty();
+    }
+    public String isDateError(RentalManage rentalManage, RentalManageDto rentalManageDto){
+            LocalDate nowDate = LocalDate.now(ZoneId.of("Asia?Tokyo"));
+        
+            Integer prestatus = rentalManage.getStatus();
+            Integer poststatus = rentalManageDto.getStatus();
+
+            LocalDate expectedRentalOn = rentalManageDto.getExpectedRentalOn().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        if (prestatus == 0 && poststatus == 1){
+            if(!expectedRentalOn.equals(nowDate)){
+                return "現在の日付を入力してください";
+            }
+
+        }
+            return null;
+    }
+    public String returnError(){
+            if(expectedReturnOn.before(expectedRentalOn)){
+                return "貸出日より前に設定してください";
+            }
+                return null;
     }
 }
 

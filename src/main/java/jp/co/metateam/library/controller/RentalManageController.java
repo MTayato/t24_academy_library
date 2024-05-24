@@ -200,8 +200,18 @@ public class RentalManageController {
             if (result.hasErrors()) {
                 throw new Exception("Validation error.");
             }
-            // 変更前の貸出情報を取得
             RentalManage rentalManage = this.rentalManageService.findById(Long.valueOf(id));
+
+            String DateError = rentalManageDto.isDateError(rentalManage, rentalManageDto);
+    
+            if(DateError != null){
+                result.addError(new FieldError("rentalManageDto", "expectedRentalOn", DateError));
+                throw new RuntimeException(DateError);
+            }
+            if (result.hasErrors()) {
+                throw new Exception("Validation error.");
+            }
+
             // 変更前と変更後の貸出ステータスを取得
             Optional<String> validErrorOptional = rentalManageDto.isStatusError(rentalManage.getStatus());
             // Optionalが空でない場合のみエラーを処理する
@@ -211,6 +221,12 @@ public class RentalManageController {
                     throw new RuntimeException(validError);
                 }
             });
+
+            String Error = rentalManageDto.returnError();
+                if(Error != null){
+                    result.addError(new FieldError("rentalManageDto","expectedReturnOn",Error));
+                    throw new RuntimeException(Error);
+            }
 
             // 更新処理
             this.rentalManageService.update(Long.valueOf(id), rentalManageDto);

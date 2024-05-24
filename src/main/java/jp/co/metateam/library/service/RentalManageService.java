@@ -1,7 +1,7 @@
 package jp.co.metateam.library.service;
 
-import java.util.Date;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +37,6 @@ public class RentalManageService {
     @Transactional
     public List<RentalManage> findAll() {
         List<RentalManage> rentalManageList = this.rentalManageRepository.findAll();
-
         return rentalManageList;
     }
 
@@ -46,7 +45,6 @@ public class RentalManageService {
         return this.rentalManageRepository.findById(id).orElse(null);
     }
 
-    // 貸出編集のリポジトリの内容を呼び出す
     @Transactional
     public long countByStockIdAndStatusIn(String stockid, Long id) {
         return this.rentalManageRepository.countByStockIdAndStatusIn(stockid, id);
@@ -56,10 +54,9 @@ public class RentalManageService {
     public long countByStockIdAndStatusAndDateIn(String stockid, Long id, Date expectedRentalOn,
             Date expectedReturnOn) {
         return this.rentalManageRepository.countByStockIdAndStatusAndDateIn(stockid, id, expectedRentalOn,
-                expectedReturnOn);
-    }
+                expectedReturnOn);   
+             }
 
-    // 貸出登録のリポジトリの内容を呼び出す
     @Transactional
     public long countByIdAndStatusIn(String stockid) {
         return this.rentalManageRepository.countByIdAndStatusIn(stockid);
@@ -132,6 +129,7 @@ public class RentalManageService {
                 throw new Exception("Stock not found.");
             }
 
+            updateTargetRental = setRentalStatusDate(updateTargetRental, rentalManageDto.getStatus());
             updateTargetRental.setId(rentalManageDto.getId());
             updateTargetRental.setAccount(account);
             updateTargetRental.setExpectedRentalOn(rentalManageDto.getExpectedRentalOn());

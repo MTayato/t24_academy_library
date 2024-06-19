@@ -12,7 +12,6 @@ import jp.co.metateam.library.values.RentalStatus;
 import lombok.Getter;
 import lombok.Setter;
 import java.util.Optional;
-import jp.co.metateam.library.values.RentalStatus;
 
 /**
  * 貸出管理DTO
@@ -88,22 +87,3 @@ public class RentalManageDto {
                 return null;
     }
 }
-
-    // public Optional<String> checkcalender(Integer oldStatus, Integer status, Date expectedReturnOn) {
-
-
-    //         Calendar cal = Calendar.getInstance();
-    //         cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
-    //         Date currentDate = cal.getTime();
-
-    //     if (oldStatus == RentalStatus.RENT_WAIT.getValue() && status == RentalStatus.RENTAlING.getValue()){
-    //         if(!expectedReturnOn.equals(currentDate)){
-
-    //             return Optional.of("貸出予定日のみ貸出中を選択できます");
-        
-    //         }else{
-    //             return Optional.empty(); // 正しい場合は空のOptionalを返す
-    //         }
-    //     }
-    //     return Optional.empty();
-    // }

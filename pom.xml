@@ -95,7 +95,13 @@
 			<version>5.10.0</version>
 			<scope>test</scope>
 		</dependency>
-	</dependencies>
+	
+   <dependency>
+     <groupId>com.tectonica</groupId>
+     <artifactId>jonix-onix3</artifactId>
+     <version>2024-04-onix308</version>
+   </dependency>
+ </dependencies>
 
 	<build>
 		<plugins>

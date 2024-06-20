@@ -133,9 +133,9 @@ public class StockService {
                 calendarDto.setStockCount(stockList.size());
 
                 for(int oneday = 1; oneday <= daysInMonth; oneday++){ //日付ごとのループ
-                    LocalDate  LocalexpectedDate = LocalDate.of(year,month,oneday);
-                    Date expectedDate = Date.from( LocalexpectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    calendarDto.rentableNum.add(rentalCount(stockList, expectedDate, today,  LocalexpectedDate));
+                    LocalDate  localExpectedDate = LocalDate.of(year,month,oneday);
+                    Date expectedDate = Date.from( localExpectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    calendarDto.rentableNum.add(rentalCount(stockList, expectedDate, today,  localExpectedDate));
                 }
                 calendarDtoList.add(calendarDto);
             }
@@ -143,11 +143,11 @@ public class StockService {
         return calendarDtoList;
     }
 
-    public RentableNumDto rentalCount(List<Stock> stockList, Date expectedDate, LocalDate today, LocalDate  LocalexpectedDate){
+    public RentableNumDto rentalCount(List<Stock> stockList, Date expectedDate, LocalDate today, LocalDate  localExpectedDate){
         RentableNumDto rentableNumDto = new RentableNumDto(); 
         int forDayOfExpected = 0;
         
-        if (!( LocalexpectedDate.isBefore(today))){
+        if (!( localExpectedDate.isBefore(today))){
             
             for(int idOfOne = 0; idOfOne < stockList.size(); idOfOne++){
                 Stock stock = stockList.get(idOfOne); 

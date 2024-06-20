@@ -91,8 +91,8 @@ public class RentalManageController {
         model.addAttribute("stockList", stockList);
         model.addAttribute("accounts", accounts);
 
-            rentalManageDto.setExpectedRentalOn(expectedRentalOn);
-            model.addAttribute("rentalManageDto",rentalManageDto);
+        rentalManageDto.setExpectedRentalOn(expectedRentalOn);
+        model.addAttribute("rentalManageDto",rentalManageDto);
         
         return "rental/add";
     }

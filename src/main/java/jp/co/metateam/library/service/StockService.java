@@ -72,7 +72,7 @@ public class StockService {
             // データベースへの保存
         this.stockRepository.save(stock);
         } catch (Exception e) {
-            throw e;
+          throw e;
         }
     }
 
@@ -133,9 +133,9 @@ public class StockService {
                 calendarDto.setStockCount(stockList.size());
 
                 for(int oneday = 1; oneday <= daysInMonth; oneday++){ //日付ごとのループ
-                    LocalDate expectedDate = LocalDate.of(year,month,oneday);
-                    Date expectedDateS = Date.from(expectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
-                    calendarDto.rentableNum.add(rentalCount(stockList, expectedDateS, today, expectedDate));
+                    LocalDate  LocalexpectedDate = LocalDate.of(year,month,oneday);
+                    Date expectedDate = Date.from( LocalexpectedDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+                    calendarDto.rentableNum.add(rentalCount(stockList, expectedDate, today,  LocalexpectedDate));
                 }
                 calendarDtoList.add(calendarDto);
             }
@@ -143,16 +143,15 @@ public class StockService {
         return calendarDtoList;
     }
 
-
-    public RentableNumDto rentalCount(List<Stock> stockList, Date expectedDateS, LocalDate today, LocalDate expectedDate){
+    public RentableNumDto rentalCount(List<Stock> stockList, Date expectedDate, LocalDate today, LocalDate  LocalexpectedDate){
         RentableNumDto rentableNumDto = new RentableNumDto(); 
         int forDayOfExpected = 0;
         
-        if (!(expectedDate.isBefore(today))){
+        if (!( LocalexpectedDate.isBefore(today))){
             
             for(int idOfOne = 0; idOfOne < stockList.size(); idOfOne++){
                 Stock stock = stockList.get(idOfOne); 
-                if(rentalDateCount(stock.getId(), expectedDateS) == 0){
+                if(rentalDateCount(stock.getId(), expectedDate) == 0){
                     forDayOfExpected++;
                     rentableNumDto.stockIdList.add(stock.getId());
                 }
@@ -162,7 +161,7 @@ public class StockService {
             rentableNumDto.setDayOfExpected("✕");
         }else{
             rentableNumDto.setDayOfExpected(forDayOfExpected);
-            rentableNumDto.setLinkDate(expectedDateS);
+            rentableNumDto.setLinkDate(expectedDate);
         }
         return rentableNumDto;
     }
@@ -174,10 +173,7 @@ public class StockService {
             String stockId = stockIdList.get(i);
             Optional<Stock> optionalStock = stockRepository.findById(stockId);
             Stock stock = optionalStock.orElse(new Stock());
-
             stockList.add(stock);  
-
-
         }
         return stockList;
     }

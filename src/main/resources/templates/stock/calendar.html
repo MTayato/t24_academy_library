@@ -42,10 +42,12 @@
                                 <tr>
                                     <td th:text="${stock.title}"></td>
                                     <td th:text="${stock.stockCount}"></td> 
-
-                                    <td th:each="stock : ${stock.rentableNum}"> <!-- stocksリストの各要素をstockとしてループする -->
-                                        <a th:href="@{/rental/{stockid}/{linkDay}/add(stockid=${stock.stockIdList}, linkDay=${stock.linkDate})}" th:if="${stock.dayOfExpected != '✕' }"> <!-- dayStockNumが '×' でない場合に表示する -->
-                                           <span th:text="${stock.dayOfExpected}"></span> <!-- stockの詳細ページへのリンクを生成する。リンクにはstockIdとexpectedRentalOnが含まれる -->
+                                    <!-- stocksリストの各要素をstockとしてループする -->
+                                    <td th:each="stock : ${stock.rentableNum}"> 
+                                        <!-- dayStockNumが '×' でない場合に表示する -->
+                                        <a th:href="@{/rental/{stockid}/{linkDay}/add(stockid=${stock.stockIdList}, linkDay=${stock.linkDate})}" th:if="${stock.dayOfExpected != '✕' }"> 
+                                             <!-- stockの詳細ページへのリンクを生成する。リンクにはstockIdとexpectedRentalOnが含まれる -->
+                                           <span th:text="${stock.dayOfExpected}"></span>
 
                                         </a>
                                         <span th:if="${stock.dayOfExpected == '✕' }" th:text="${stock.dayOfExpected}"></span>

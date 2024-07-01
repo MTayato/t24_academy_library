@@ -122,7 +122,7 @@ public class StockController {
             // 登録処理
             stockService.update(id, stockDto);
 
-            return "stock/index";
+            return "redirect:/stock/index";
         } catch (Exception e) {
             log.error(e.getMessage());
 

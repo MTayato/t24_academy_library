@@ -13,20 +13,25 @@ import io.micrometer.common.util.StringUtils;
 import jp.co.metateam.library.constants.Constants;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
+import jp.co.metateam.library.model.Review;
+import jp.co.metateam.library.model.ReviewDto;
 import jp.co.metateam.library.model.Stock;
 import jp.co.metateam.library.repository.BookMstRepository;
 import jp.co.metateam.library.repository.StockRepository;
+import jp.co.metateam.library.repository.ReviewRepository;
 
 @Service
 public class BookMstService {
 
     private final BookMstRepository bookMstRepository;
     private final StockRepository stockRepository;
+    private final ReviewRepository reviewRepository;
 
     @Autowired
-    public BookMstService(BookMstRepository bookMstRepository, StockRepository stockRepository) {
+    public BookMstService(BookMstRepository bookMstRepository, StockRepository stockRepository, ReviewRepository reviewRepository) {
         this.bookMstRepository = bookMstRepository;
         this.stockRepository = stockRepository;
+        this.reviewRepository = reviewRepository;
     }
 
     public List<BookMst> findAll() {
@@ -106,4 +111,42 @@ public class BookMstService {
         }
         return false;
     }
+
+    @Transactional
+    public List<Review> reviewIndex(Long id){
+        List<Review> reviewList = this.reviewRepository.reviewCheck(id);
+
+        return reviewList;
+    }
+
+    // レビューバリデーション
+    public boolean isValidBody(String body, Model model) {
+        if (StringUtils.isEmpty(body) || body.length() != 140) {
+            model.addAttribute("errBody", "レビュー本文は140字以内で記述してください");
+            return true;
+        }
+        return false;
+    }
+    public boolean isValidScore(Integer score, Model model) {
+        if (score == null || score < 0 || score > 9) {
+            model.addAttribute("errScore", "評価は0から9までの整数で入力してください");
+            return false; // 評価が無効な場合は false を返す
+        }
+        return true; // 評価が有効な場合は true を返す
+    }
+    @Transactional
+    public void reviewSave(ReviewDto reviewDto) {
+        try {
+            Review review = new Review();
+
+            review.setScore(reviewDto.getScore());
+            review.setBody(reviewDto.getBody());
+
+            // データベースへの保存
+            this.reviewRepository.save(review);
+        } catch (Exception e) {
+            throw e;
+        }
+    }
 }
+    

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{common :: meta_header('貸出登録',~{::link},~{::script})}">
+    <title th:text="${title}+' | MTLibrary'"></title>
+    <link rel="stylesheet" th:href="@{/css/review/add.css}" />
+    <script type="text/javascript" th:src="@{/js/review/add.js}"></script>
+</head>
+
+<body>
+    <div class="contents">
+        <div th:replace="~{common :: main_sidebar}"></div>
+        <div class="main_contents">
+            <div th:replace="~{common :: header}"></div>
+            <div class="inner_contens">
+                <div class="page_title">レビュー登録</div>
+                <!-- 登録画面メイン -->
+                <div class="page_contents">
+                    <form id="book_register_form" th:object="${reviewDto}" th:action="@{/review/{id}/{title}/add(id=*{book_id},title=${title})}" method="post">
+                        <div th:inline="text">
+                            <span class="booktitle"> 書籍名:[[${title}]]</span></div>
+                                <div class="mb30 flexarea">
+                                    <span class="text-red">＊は必須項目です</span>
+                                    <span>
+                                        <a th:href="@{/review/{id}/{title}/review(id=*{id},title=${title})}">レビュー一覧</a>
+                                    </span></div>
+                                        <div class="mb30">
+                                            <label for="title">評価（☆１～５）<span class="text-red asterisk">＊</span></label>
+                                            <br>
+                                                <input class="form_input" type="text" id="score" name="score" th:field="*{score}"
+                                                    placeholder="★★★☆☆" />
+                                                <div class="error_msg" th:if="${errTitle}">
+                                                <p th:text="${errTitle}" class="text-red" ></p>
+                                            </br> 
+                                        </div>
+                                        <div class="mb30">
+                                            <label for="title">書籍のレビュー<span class="text-red asterisk">＊</span></label>
+                                            <br>
+                                                <input class="form_input" type="text" id="body" name="body" th:field="*{body}"
+                                                    placeholder="書籍レビューを入力" />
+                                                <div class="error_msg" th:if="${errTitle}">
+                                            </br>
+                                        </div>
+                                        <div class="btn_block">
+                                            <input id="submit_btn" type="submit" value="保存">
+                                        </div> 
+                        
+                    </form>
+                </div>        
+            </div>
+    </div>
+    <div th:replace="~{common :: footer}"></div>
+</body>

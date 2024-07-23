@@ -15,6 +15,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import jakarta.validation.Valid;
 import jp.co.metateam.library.model.BookMst;
 import jp.co.metateam.library.model.BookMstDto;
+import jp.co.metateam.library.model.Review;
+import jp.co.metateam.library.model.ReviewDto;
 import jp.co.metateam.library.service.BookMstService;
 import lombok.extern.log4j.Log4j2;
 
@@ -121,4 +123,63 @@ public class BookController {
             return "book/edit";
         }
     }
+
+    @GetMapping("/review/{id}/{title}/review")
+    public String review(@PathVariable("id") Long id, @PathVariable("title") String title,Model model) {
+        List<Review> reviewList = this.bookMstService.reviewIndex(id);
+
+        model.addAttribute("reviewList",reviewList);
+        model.addAttribute("title", title);
+        
+        return "review/review";
+    }
+
+    @GetMapping("/review/{id}/{title}/add")
+    public String add(@PathVariable("id") Long id, @PathVariable("title") String title,Model model) {
+        
+        ReviewDto reviewDto = new ReviewDto();
+        // BookMst bookMst = new BookMst();
+        reviewDto.setBookId(id);
+        // reviewDto.setBook(bookMst);
+
+        model.addAttribute("reviewDto", reviewDto);
+        model.addAttribute("title", title);
+        
+        // model.addAttribute("id", id);
+
+        return "review/add";
+    }
+    
+
+    @PostMapping("/review/{id}/{title}/add")
+    public String register(@Valid @ModelAttribute ReviewDto reviewDto,  RedirectAttributes ra, Model model) {
+        try {
+
+            boolean validScore = bookMstService.isValidScore(reviewDto.getScore(), model);
+            boolean validBody = bookMstService.isValidBody(reviewDto.getBody(), model);
+            
+            if (validScore || validBody) {
+                model.addAttribute("reviewDto", reviewDto);
+                return "review/add";
+            }
+
+            // if (result.hasErrors()) {
+            //     throw new Exception("Validation error.");
+            // }
+
+            // 登録処理
+            this.bookMstService.reviewSave(reviewDto);
+            
+            return "redirect:/review/review";
+            
+        } catch (Exception e) {
+            log.error(e.getMessage());
+
+            ra.addFlashAttribute("reviewDto", reviewDto);
+            // ra.addFlashAttribute("org.springframework.validation.BindingResult.bookMstDto", result);
+
+            return "review/add";
+        }
+    }
 }
+

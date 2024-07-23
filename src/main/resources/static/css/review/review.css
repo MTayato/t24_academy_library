@@ -1,0 +1,72 @@
+/* レビュー登録ボタン */
+.meta-operation-review-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    height: 30px;
+    font-size: 18px;
+    text-align: center;
+    background-color: #9CF2D3;
+    color: #6D6D6E;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    padding: 10px 5px;
+    margin: 12px 0px 12px 0px; 
+    float: right; 
+}
+
+.meta-operation-review-btn img {
+    margin-right: 7px;
+    width: 20px;
+    height: 20px;
+}
+
+.meta-operation-review-btn:hover {
+    opacity: 0.6;
+}
+
+/* 表 */
+.review_table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius:10px;
+   }
+.review_table th{
+    padding: 10px;
+    background: rgba(0,0,0,0.06);
+    padding: 13px;
+    border: solid 1px #B9B9B9;
+    color: #545454;
+    font-size: 18px;
+  }
+  
+.review_table td{
+    text-align: left;
+    vertical-align: top;
+    background: #FFFFFF;
+    border: solid 1px #B9B9B9;
+    padding: 13px;
+    font-size: 20px;
+  }
+.review_table .rate_column {
+    width: 17%;
+}
+.review_table .review_column {
+    width: 65%;
+}
+.review_table .date_column {
+    width: 18%;
+}
+.review_table td .trash_icon{
+    float: right;
+    width:19px;
+}
+
+/* リンク */
+.book_link{
+    float: right;
+    color: #0000EE;
+}

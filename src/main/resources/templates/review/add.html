@@ -4,7 +4,6 @@
 <head th:replace="~{common :: meta_header('貸出登録',~{::link},~{::script})}">
     <title th:text="${title}+' | MTLibrary'"></title>
     <link rel="stylesheet" th:href="@{/css/review/add.css}" />
-    <script type="text/javascript" th:src="@{/js/review/add.js}"></script>
 </head>
 
 <body>
@@ -16,38 +15,58 @@
                 <div class="page_title">レビュー登録</div>
                 <!-- 登録画面メイン -->
                 <div class="page_contents">
-                    <form id="book_register_form" th:object="${reviewDto}" th:action="@{/review/{id}/{title}/add(id=*{book_id},title=${title})}" method="post">
+                    <form id="book_register_form" th:object="${reviewDto}" th:action="@{/review/{id}/{title}/add(id=*{bookId},title=*{title})}" method="post">
+                        <div class="mb30" style="text-align: right;">
+                            <a th:href="@{/review/{id}/{title}/review(id=*{bookId},title=*{title})}">レビュー一覧</a>
+                        </div>
                         <div th:inline="text">
-                            <span class="booktitle"> 書籍名:[[${title}]]</span></div>
-                                <div class="mb30 flexarea">
-                                    <span class="text-red">＊は必須項目です</span>
-                                    <span>
-                                        <a th:href="@{/review/{id}/{title}/review(id=*{id},title=${title})}">レビュー一覧</a>
-                                    </span></div>
-                                        <div class="mb30">
-                                            <label for="title">評価（☆１～５）<span class="text-red asterisk">＊</span></label>
-                                            <br>
-                                                <input class="form_input" type="text" id="score" name="score" th:field="*{score}"
-                                                    placeholder="★★★☆☆" />
-                                                <div class="error_msg" th:if="${errTitle}">
-                                                <p th:text="${errTitle}" class="text-red" ></p>
-                                            </br> 
-                                        </div>
-                                        <div class="mb30">
-                                            <label for="title">書籍のレビュー<span class="text-red asterisk">＊</span></label>
-                                            <br>
-                                                <input class="form_input" type="text" id="body" name="body" th:field="*{body}"
-                                                    placeholder="書籍レビューを入力" />
-                                                <div class="error_msg" th:if="${errTitle}">
-                                            </br>
-                                        </div>
-                                        <div class="btn_block">
-                                            <input id="submit_btn" type="submit" value="保存">
-                                        </div> 
-                        
+                            <span class="bookTitle"> 書籍名：[[${title}]]</span>
+                        </div>
+                        <br>
+                        <br>
+                        <div>
+                            <span class="text-red">＊は必須項目です</span>
+                        </div>
+                        <br>
+                        <div class="mb30">
+                            <label for="title">評価（☆１～５）<span class="text-red asterisk">＊</span></label>
+                                <br>
+                                    <div class="rate-form">
+                                        <input id="star5" type="radio" name="rate" th:value="5">
+                                        <label for="star5">★</label>
+                                        <input id="star4" type="radio" name="rate" th:value="4">
+                                        <label for="star4">★</label>
+                                        <input id="star3" type="radio" name="rate" th:value="3">
+                                        <label for="star3">★</label>
+                                        <input id="star2" type="radio" name="rate" th:value="2">
+                                        <label for="star2">★</label>
+                                        <input id="star1" type="radio" name="rate" th:value="1">
+                                        <label for="star1">★</label>
+                                    </div>
+                                    <div class="error_msg" th:if="${errScore}">
+                                        <p th:text="${errScore}" ></p>
+                                    </div>
+                                </br> 
+                        </div>
+                        <div class="mb30">
+                            <label for="title">書籍のレビュー<span class="text-red asterisk">＊</span></label>
+                                <br>
+                                    <input class="form_input" type="text" id="body" name="body" th:field="*{body}"
+                                        placeholder="書籍レビューを入力" />
+                                    <input class="book_id" type="hidden" id="book_id" name="book_id" th:field="*{bookId}"/>
+                                    <div class="error_msg" th:if="${errBody}">
+                                        <p th:text="${errBody}"></p>
+                                    </div>
+                                </br>
+                        </div>
+                            <div class="btn_block">
+                                <input id="submit_btn" type="submit" value="保存">
+                            </div> 
+                        <input class="form_input" type="hidden" id="book_id" name="book_id" th:field="*{bookId}"/>
                     </form>
                 </div>        
             </div>
+        </div>
     </div>
     <div th:replace="~{common :: footer}"></div>
 </body>

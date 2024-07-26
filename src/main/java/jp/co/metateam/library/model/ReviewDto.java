@@ -15,15 +15,13 @@ public class ReviewDto {
 
     private Long id; 
 
-    private Timestamp created_at;
+    private Timestamp createdAt;
 
     private Integer score;
 
     private String body;
 
-    private Long book_id;
+    private Long bookId;
 
-    public Long getBookId() { return book_id; } 
-    
-    public void setBookId(Long book_id) { this.book_id = book_id; }
+    private String title;
 }

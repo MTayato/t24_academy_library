@@ -72,19 +72,13 @@ public class Review {
         this.score = score;
     }
  
-    public void setReviewBody(String body) {
+    public void setBody(String body) {
         this.body = body;
     }
  
     public void setBookMst(BookMst bookMst) {
         this.bookMst = bookMst;
     }
-
-    public void setBody(String body2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setBody'");
-    }
- 
 }
  
  

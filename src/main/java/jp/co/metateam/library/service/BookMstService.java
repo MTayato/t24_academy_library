@@ -1,5 +1,6 @@
 package jp.co.metateam.library.service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -121,27 +122,34 @@ public class BookMstService {
 
     // レビューバリデーション
     public boolean isValidBody(String body, Model model) {
-        if (StringUtils.isEmpty(body) || body.length() != 140) {
+        if (StringUtils.isEmpty(body) || body.length() > 140) {
             model.addAttribute("errBody", "レビュー本文は140字以内で記述してください");
             return true;
         }
         return false;
     }
     public boolean isValidScore(Integer score, Model model) {
-        if (score == null || score < 0 || score > 9) {
-            model.addAttribute("errScore", "評価は0から9までの整数で入力してください");
-            return false; // 評価が無効な場合は false を返す
+        if (score == null || score < 1 || score > 5) {
+            model.addAttribute("errScore", "評価は1から5までの整数で入力してください");
+            return true;
         }
-        return true; // 評価が有効な場合は true を返す
+        return false;
     }
     @Transactional
-    public void reviewSave(ReviewDto reviewDto) {
+    public void reviewSave(ReviewDto reviewDto)throws Exception {
         try {
             Review review = new Review();
+            BookMst bookMst = new BookMst();
+
+            bookMst.setId(reviewDto.getBookId());
 
             review.setScore(reviewDto.getScore());
             review.setBody(reviewDto.getBody());
+            review.setBookMst(bookMst);
 
+            review.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+
+            review.setId(100l);
             // データベースへの保存
             this.reviewRepository.save(review);
         } catch (Exception e) {

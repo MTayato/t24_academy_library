@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
@@ -140,10 +141,10 @@ public class BookController {
         ReviewDto reviewDto = new ReviewDto();
         // BookMst bookMst = new BookMst();
         reviewDto.setBookId(id);
+        reviewDto.setTitle(title);
         // reviewDto.setBook(bookMst);
 
         model.addAttribute("reviewDto", reviewDto);
-        model.addAttribute("title", title);
         
         // model.addAttribute("id", id);
 
@@ -152,7 +153,8 @@ public class BookController {
     
 
     @PostMapping("/review/{id}/{title}/add")
-    public String register(@Valid @ModelAttribute ReviewDto reviewDto,  RedirectAttributes ra, Model model) {
+    public String registerAdd(@PathVariable("id") Long id,@PathVariable("title") String title, @RequestParam(value = "rate", defaultValue = "0") Integer score, @Valid @ModelAttribute ReviewDto reviewDto, BindingResult result,  RedirectAttributes ra, Model model) {
+        reviewDto.setScore(score);
         try {
 
             boolean validScore = bookMstService.isValidScore(reviewDto.getScore(), model);
@@ -163,14 +165,14 @@ public class BookController {
                 return "review/add";
             }
 
-            // if (result.hasErrors()) {
-            //     throw new Exception("Validation error.");
-            // }
+            if (result.hasErrors()) {
+                throw new Exception("Validation error.");
+            }
 
             // 登録処理
             this.bookMstService.reviewSave(reviewDto);
             
-            return "redirect:/review/review";
+            return "redirect:/review/{id}/{title}/review";
             
         } catch (Exception e) {
             log.error(e.getMessage());

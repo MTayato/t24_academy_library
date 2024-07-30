@@ -36,5 +36,4 @@ public interface RentalManageRepository extends JpaRepository<RentalManage, Long
             " AND (rm.expectedRentalOn > ?2 AND rm.expectedReturnOn < ?3)")
     long countByIdAndStatusAndDateIn(String stockid, Date expectedRentalOn, Date expectedReturnOn);
 
-    
 }

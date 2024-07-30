@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jakarta.validation.Valid;
 import jp.co.metateam.library.model.BookMst;
+import jp.co.metateam.library.model.CalendarDto;
 import jp.co.metateam.library.model.Stock;
 import jp.co.metateam.library.model.StockDto;
 import jp.co.metateam.library.service.BookMstService;
@@ -121,7 +122,7 @@ public class StockController {
             // 登録処理
             stockService.update(id, stockDto);
 
-            return "stock/index";
+            return "redirect:/stock/index";
         } catch (Exception e) {
             log.error(e.getMessage());
 
@@ -133,7 +134,7 @@ public class StockController {
     }
 
     @GetMapping("/stock/calendar")
-    public String calendar(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month, Model model) {
+        public String calendar(@RequestParam(required = false) Integer year, @RequestParam(required = false) Integer month, Model model) {
 
         LocalDate today = year == null || month == null ? LocalDate.now() : LocalDate.of(year, month, 1);
         Integer targetYear = year == null ? today.getYear() : year;
@@ -142,15 +143,14 @@ public class StockController {
         LocalDate startDate = LocalDate.of(targetYear, targetMonth, 1);
         Integer daysInMonth = startDate.lengthOfMonth();
 
-        List<Object> daysOfWeek = this.stockService.generateDaysOfWeek(targetYear, targetMonth, startDate, daysInMonth);
-        List<String> stocks = this.stockService.generateValues(targetYear, targetMonth, daysInMonth);
+        List<Object> daysOfWeek = stockService.generateDaysOfWeek(targetYear, targetMonth, startDate, daysInMonth);
+        List<CalendarDto> stocksLists = stockService.generateStocksForCalendar(targetYear, targetMonth, daysInMonth);
 
         model.addAttribute("targetYear", targetYear);
         model.addAttribute("targetMonth", targetMonth);
         model.addAttribute("daysOfWeek", daysOfWeek);
         model.addAttribute("daysInMonth", daysInMonth);
-
-        model.addAttribute("stocks", stocks);
+        model.addAttribute("stocksLists", stocksLists);
 
         return "stock/calendar";
     }

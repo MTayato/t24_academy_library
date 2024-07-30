@@ -34,10 +34,11 @@ import java.util.Date;
 @Controller
 public class RentalManageController {
 
-    private final BookMstService bookMstService;
+    
     private final StockService stockService;
     private final AccountService accountService;
     private final RentalManageService rentalManageService;
+    private final BookMstService bookMstService;
 
     @Autowired
     public RentalManageController(
@@ -78,10 +79,21 @@ public class RentalManageController {
         model.addAttribute("stockList", stockList);
         model.addAttribute("accounts", accounts);
 
-        if (!model.containsAttribute("rentalManageDto")) {
-            model.addAttribute("rentalManageDto", new RentalManageDto());
-        }
+        return "rental/add";
+    }
 
+    @GetMapping("/rental/{stockid}/{linkDay}/add") //リンクから飛んだ時
+    public String linkAdd(@PathVariable("stockid") List<String> idList, @ModelAttribute RentalManageDto rentalManageDto,@PathVariable("linkDay") Date expectedRentalOn,Model model) {
+        List<Stock> stockList = this.stockService.getList(idList);
+        List<Account> accounts = this.accountService.findAll();
+
+        model.addAttribute("rentalStatus", RentalStatus.values());
+        model.addAttribute("stockList", stockList);
+        model.addAttribute("accounts", accounts);
+
+        rentalManageDto.setExpectedRentalOn(expectedRentalOn);
+        model.addAttribute("rentalManageDto",rentalManageDto);
+        
         return "rental/add";
     }
 
@@ -249,7 +261,7 @@ public class RentalManageController {
             ra.addFlashAttribute("rentalManageDto", rentalManageDto);
             ra.addFlashAttribute("org.springframework.validation.BindingResult.rentalManageDto", result);
 
-            return String.format("redirect:/rental/%s/edit", id);
+            return "redirect:/rental/{id}/edit";
         }
     }
 

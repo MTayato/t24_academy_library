@@ -16,12 +16,12 @@
                     <div class="inner_contens__operation">
                         <a th:href="@{/book/add}" class="meta-operation-btn"><img src="../images/icons/add.png" alt="stock" />書籍登録</a>
                     </div>
-                    <table class="books_table" align="left">
+                    <table class="books_table">
                         <tr>
                             <th>書籍名</th>
                             <th>ISBN</th>
                             <th>利用可能在庫数</th>
-                        </tr>
+                            <th>書籍レビュー</th>
                         <tr th:each="bookMst : ${bookMstList}">
                             <td th:inline="text">
                                 <div class="book_title_contents">
@@ -34,6 +34,9 @@
                             <td th:inline="text">
                                 <span class="stockcount"> [[${bookMst.stockCount}]]冊</span>
                                 <a th:href="@{/stock/add}">在庫追加</a>
+                            </td>
+                            <td th:inline="text">
+                                <a th:href="@{/review/{id}/{title}/review(id=*{bookMst.id},title=*{bookMst.title})}">レビュー一覧</a>
                             </td>
                         </tr>
                     </table>

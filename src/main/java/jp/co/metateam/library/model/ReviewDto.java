@@ -2,25 +2,26 @@ package jp.co.metateam.library.model;
 
 import java.security.Timestamp;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 書籍マスタDTO
+ * 書籍レビューマスタDTO
  */
 @Getter
 @Setter
-public class BookMstDto {
-    
+public class ReviewDto {
+
     private Long id; 
-    
-    private String isbn;
+
+    private Timestamp createdAt;
+
+    private Integer score;
+
+    private String body;
+
+    private Long bookId;
 
     private String title;
-    
-    private long stockCount;
-    
-    private Timestamp deletedAt;
-
-    private BookMst bookMst;
 }
